@@ -1,0 +1,30 @@
+---
+# - hosts: all
+  # roles:
+    # - debug
+
+- name: Install snapshot services
+  hosts: [ 'vm_hosts' ]
+  become: True
+  roles:
+    - role: snapshot_service
+      tags: [ 'role::snapshot_service' ]
+
+- name: Install and manage libvirtd
+  hosts: [ 'vm_hosts' ]
+  become: True
+  roles:
+    - role: debops.libvirtd
+      tags: [ 'role::libvirtd' ]
+
+- name: Provision VM on libvirt
+  hosts: [ 'vm_guests' ]
+  become: True
+  gather_facts: no
+  # Todo: fix libvirt networking check
+  serial: 1
+  roles:
+    - role: ansible-provisioning
+      tags: [ 'role::virtserver' ]
+    - role: virtserver
+      tags: [ 'role::virtserver' ]

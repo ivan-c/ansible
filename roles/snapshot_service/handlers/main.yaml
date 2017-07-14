@@ -1,0 +1,10 @@
+---
+- name: enable restore-snapshot service
+  systemd:
+    name: restore-snapshot.service
+    enabled: yes
+
+- name: enable create-snapshot service
+  systemd:
+    name: create-snapshot.service
+    enabled: yes

@@ -1,0 +1,15 @@
+[Unit]
+Description=Create LVM snapshot
+Requires=local-fs-pre.target
+DefaultDependencies=no
+Conflicts=shutdown.target
+After=local-fs-pre.target
+Before=local-fs.target
+
+[Install]
+WantedBy=create-snapshot.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -ec "/sbin/lvcreate --snapshot --size 1G --name {{ inventory_hostname }}-var-$(date -I) /dev/{{ inventory_hostname }}-vg/var"
+ExecStart=/bin/sh -ec "/sbin/lvcreate --snapshot --size 1G --name {{ inventory_hostname }}-root-$(date -I) /dev/{{ inventory_hostname }}-vg/root"

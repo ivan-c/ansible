@@ -1,0 +1,85 @@
+---
+- delegate_to: "{{ vm_host }}"
+  # name: Create and start libvirt networking
+  block:
+    - name: List all libvirt networks
+      command: virsh net-list --name --all
+      register: all_libvirt_networks
+      changed_when: False
+
+    - name: Create default network
+      command: virsh net-define /etc/libvirt/qemu/networks/default.xml
+      when: '"default" not in all_libvirt_networks.stdout_lines'
+
+    - name: List enabled libvirt networks
+      command: virsh net-list --name
+      register: libvirt_networks
+      changed_when: False
+
+    - name: Start the default network
+      command: virsh net-start default
+      when: '"default" not in libvirt_networks.stdout_lines'
+
+- delegate_to: "{{ vm_host }}"
+  # name: Create prerequisite files and directories
+  block:
+    - name: Create a folder for VM definitions
+      file:
+        path: "{{ vm_definitions_dir }}"
+        state: directory
+
+    - name: Create VM image directory
+      file:
+        path: "{{ vm_image_dir }}/{{ inventory_hostname }}"
+        state: directory
+
+    - name: Allocate storage for the VM
+      qemu_img:
+        dest: "/var/lib/libvirt/images/{{ inventory_hostname }}.qcow2"
+        size: 10240
+
+    - name: Create a VM definition
+      template:
+        src: libvirt_domain.xml.j2
+        dest: "{{ vm_definitions_dir }}/{{ inventory_hostname }}.xml"
+
+- name: Create the VM
+  virt_guest:
+    guest: "{{ inventory_hostname }}"
+    src: "{{ vm_definitions_dir }}/{{ inventory_hostname }}.xml"
+  delegate_to: "{{ vm_host }}"
+  register: guests
+
+- name: Create a group of unprovisioned systems
+  group_by:
+    key: "{{ guests.provisioning_status }}"
+
+- delegate_to: "{{ vm_host }}"
+  when: inventory_hostname in groups['unprovisioned']|default({})
+  block:
+    - name: Netboot the provided OS
+      include: "netboot_{{ provisioned_os }}.yaml"
+
+    - name: Wait until the VM stops
+      virt:
+        name: "{{ inventory_hostname }}"
+        command: status
+      register: libvirt_status
+      until: "{{ libvirt_status.status == 'shutdown' }}"
+      delay: 60
+      retries: 20
+
+    - name: Start the VM
+      virt_boot:
+        guest: "{{ inventory_hostname }}"
+        boot: hd
+  rescue:
+    - name: Poweroff any partially provisioned VMs
+      virt:
+        name: "{{ inventory_hostname }}"
+        state: destroyed
+
+    - name: Undefine any partially provisioned VMs
+      virt_guest:
+        guest: "{{ inventory_hostname }}"
+        state: "absent"

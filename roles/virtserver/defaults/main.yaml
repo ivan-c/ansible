@@ -1,0 +1,9 @@
+---
+vm_image_dir: /tmp/vm-images
+vm_definitions_dir: /tmp/vm-definitions
+centos_mirror: http://ftp.belnet.be/ftp.centos.org
+ks_url: https://raw.githubusercontent.com/jhoekx/ansible-provisioning/master/examples/centos-on-libvirt/templates/centos7.ks
+
+preseed_url: https://gist.githubusercontent.com/ivan-c/13d16782e0831279f9de51ef860c7142/raw/69f65b1de941362c036ea68fdeb5449dc47dd4d5/preseed.txt
+debian_mirror: http://ftp.debian.org
+vm_domain: cact.us.eu.org

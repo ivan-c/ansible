@@ -1,0 +1,15 @@
+---
+- name: Download PXE images
+  get_url:
+    url: "{{ debian_mirror }}/debian/dists/stretch/main/installer-amd64/current/images/netboot/debian-installer/amd64/{{ item }}"
+    dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/{{ item }}"
+  with_items:
+  - initrd.gz
+  - linux
+
+- name: Boot the VM using the PXE images
+  virt_boot:
+    guest: "{{ inventory_hostname }}"
+    kernel: "{{ vm_image_dir }}/{{ inventory_hostname }}/linux"
+    initrd: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.gz"
+    cmdline: "auto=true url={{ preseed_url }} hostname={{ inventory_hostname }} domain={{ vm_domain }}"
