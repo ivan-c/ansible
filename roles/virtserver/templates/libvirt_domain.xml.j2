@@ -1,7 +1,7 @@
 <domain type='kvm'>
     <name>{{ inventory_hostname }}</name>
-    <memory>{{ memory|default(2048)|int * 1024 }}</memory>
-    <vcpu>{{ vcpu|default(2)|int }}</vcpu>
+    <memory>{{ vm_memory|int * 1024 }}</memory>
+    <vcpu>{{ vm_vcpu|int }}</vcpu>
 
     <os>
         <type arch='x86_64' machine='pc'>hvm</type>
