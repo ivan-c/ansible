@@ -5,21 +5,21 @@
 
 - name: Install snapshot services
   hosts: [ 'vm_hosts' ]
-  become: True
+  become: true
   roles:
     - role: snapshot_service
       tags: [ 'role::snapshot_service' ]
 
 - name: Install and manage libvirtd
   hosts: [ 'vm_hosts' ]
-  become: True
+  become: true
   roles:
     - role: debops.libvirtd
       tags: [ 'role::libvirtd' ]
 
 - name: Provision VM on libvirt
   hosts: [ 'vm_guests' ]
-  become: True
+  become: true
   gather_facts: no
   # Todo: fix libvirt networking check
   serial: 1

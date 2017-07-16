@@ -5,7 +5,7 @@
     - name: List all libvirt networks
       command: virsh net-list --name --all
       register: all_libvirt_networks
-      changed_when: False
+      changed_when: false
 
     - name: Create default network
       command: virsh net-define /etc/libvirt/qemu/networks/default.xml
@@ -14,7 +14,7 @@
     - name: List enabled libvirt networks
       command: virsh net-list --name
       register: libvirt_networks
-      changed_when: False
+      changed_when: false
 
     - name: Start the default network
       command: virsh net-start default
