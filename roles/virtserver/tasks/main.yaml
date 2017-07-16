@@ -10,6 +10,7 @@
     - name: Create default network
       command: virsh net-define /etc/libvirt/qemu/networks/default.xml
       when: '"default" not in all_libvirt_networks.stdout_lines'
+      run_once: true
 
     - name: List enabled libvirt networks
       command: virsh net-list --name
