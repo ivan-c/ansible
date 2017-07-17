@@ -8,5 +8,5 @@ preseed_url: https://gist.githubusercontent.com/ivan-c/13d16782e0831279f9de51ef8
 debian_mirror: http://ftp.debian.org
 
 vm_domain: cact.us.eu.org
-vm_memory:2048
-vm_vcpu:1
+vm_memory: 2048
+vm_vcpu: 1
