@@ -1,0 +1,22 @@
+sudo: false
+language: python
+python:
+  - "2.7"
+
+cache:
+  pip: true
+  directories:
+    - $HOME/.ansible/roles/
+
+before_install:
+  - rm --verbose --recursive --force $HOME/.cache/pip/{http,log}
+  - pip install --upgrade pip setuptools
+
+install:
+  - pip install ansible ansible-lint
+  - ansible-galaxy install --role-file requirements.yaml
+
+script: find -name "*.yaml" -print | xargs --max-args 1 ansible-lint --exclude "$HOME/.ansible/roles/"
+
+before_cache:
+  - rm --verbose --recursive --force $HOME/.cache/pip/{http,log}
