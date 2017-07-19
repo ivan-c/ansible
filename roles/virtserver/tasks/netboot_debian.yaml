@@ -7,9 +7,26 @@
   - initrd.gz
   - linux
 
+- name: Extract initial ramdisk
+  command: gunzip --keep initrd.gz
+  args:
+    chdir: "{{ vm_image_dir }}/{{ inventory_hostname }}/"
+    creates: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd"
+
+- name: Copy preseed file
+  template:
+    src: preseed.cfg.j2
+    dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed.cfg"
+
+- name: Append preseed file to initial ramdisk
+  shell: "cp initrd initrd.preseed && echo 'preseed.cfg' | cpio --create --format newc --append --file initrd.preseed"
+  args:
+    chdir: "{{ vm_image_dir }}/{{ inventory_hostname }}/"
+    creates: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
+
 - name: Boot the VM using the PXE images
   virt_boot:
     guest: "{{ inventory_hostname }}"
     kernel: "{{ vm_image_dir }}/{{ inventory_hostname }}/linux"
-    initrd: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.gz"
-    cmdline: "auto=true url={{ preseed_url }} hostname={{ inventory_hostname }} domain={{ vm_domain }}"
+    initrd: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
+    cmdline: "auto=true hostname={{ inventory_hostname }} domain={{ vm_domain }} preseed/file=/preseed.cfg"
