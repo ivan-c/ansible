@@ -13,13 +13,18 @@
     chdir: "{{ vm_image_dir }}/{{ inventory_hostname }}/"
     creates: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd"
 
+- name: Create a folder for preseed files
+  file:
+    path: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed"
+    state: directory
+
 - name: Copy preseed file
   template:
     src: preseed.cfg.j2
-    dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed.cfg"
+    dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed/preseed.cfg"
 
 - name: Append preseed file to initial ramdisk
-  shell: "cp initrd initrd.preseed && echo 'preseed.cfg' | cpio --create --format newc --append --file initrd.preseed"
+  shell: "cp initrd initrd.preseed && find preseed/ | cpio --create --format newc --append --file initrd.preseed"
   args:
     chdir: "{{ vm_image_dir }}/{{ inventory_hostname }}/"
     creates: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
