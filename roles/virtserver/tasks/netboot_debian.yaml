@@ -22,12 +22,17 @@
   template:
     src: preseed.cfg.j2
     dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed/preseed.cfg"
+  register: preseed_file_result
+
+- name: Check if preseed initramfs exists
+  stat: path="{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
+  register: preseed_initramfs
 
 - name: Append preseed file to initial ramdisk
   shell: "cp initrd initrd.preseed && find preseed/ | cpio --create --format newc --append --file initrd.preseed"
   args:
     chdir: "{{ vm_image_dir }}/{{ inventory_hostname }}/"
-    creates: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
+  when: not preseed_initramfs.stat.exists or preseed_file_result.changed
 
 - name: Boot the VM using the PXE images
   virt_boot:
