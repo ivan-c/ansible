@@ -18,6 +18,12 @@
     path: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed"
     state: directory
 
+- name: Download authorized keys
+  get_url:
+    url: "https://github.com/ivan-c.keys"
+    dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/preseed/authorized_keys"
+  register: keys_file_result
+
 - name: Copy preseed file
   template:
     src: preseed.cfg.j2
@@ -32,11 +38,11 @@
   shell: "cp initrd initrd.preseed && find preseed/ | cpio --create --format newc --append --file initrd.preseed"
   args:
     chdir: "{{ vm_image_dir }}/{{ inventory_hostname }}/"
-  when: not preseed_initramfs.stat.exists or preseed_file_result.changed
+  when: not preseed_initramfs.stat.exists or preseed_file_result.changed or keys_file_result.changed
 
 - name: Boot the VM using the PXE images
   virt_boot:
     guest: "{{ inventory_hostname }}"
     kernel: "{{ vm_image_dir }}/{{ inventory_hostname }}/linux"
     initrd: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
-    cmdline: "auto=true hostname={{ inventory_hostname }} domain={{ vm_domain }} preseed/file=/preseed.cfg"
+    cmdline: "auto=true hostname={{ inventory_hostname }} domain={{ vm_domain }} preseed/file=/preseed/preseed.cfg"

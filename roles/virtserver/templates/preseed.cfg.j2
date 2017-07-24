@@ -324,3 +324,4 @@ d-i debian-installer/exit/poweroff boolean true
 # directly, or use the apt-install and in-target commands to easily install
 # packages and run commands in the target system.
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
+d-i preseed/late_command string mkdir -p /target/root/.ssh/ ; cp /preseed/authorized_keys /target/root/.ssh/authorized_keys
