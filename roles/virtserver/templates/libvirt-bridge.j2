@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+# https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html#debian
+
+auto br0
+iface br0 inet dhcp
+    bridge_ports enp2s0

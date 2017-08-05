@@ -36,10 +36,17 @@
             <readonly/>
         </disk>
 
+{% if vm_network_type  == 'bridge' %}
+        <interface type='bridge'>
+            <source bridge='br0'/>
+            <model type='virtio'/>
+        </interface>
+{% elif vm_network_type  == 'nat' %}
         <interface type='network'>
             <source network='default'/>
             <model type='virtio'/>
         </interface>
+{% endif %}
 
         <serial type='pty'>
             <target port='0'/>

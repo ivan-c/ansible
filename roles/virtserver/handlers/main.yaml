@@ -1,0 +1,4 @@
+---
+- name: Restart networking
+  service: name=network state=restarted
+  delegate_to: "{{ vm_host }}"
