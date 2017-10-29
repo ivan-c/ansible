@@ -15,7 +15,9 @@
   become: true
   roles:
     - role: debops.libvirtd
-      tags: [ 'role::libvirtd' ]
+      tags:
+        - 'role::libvirtd'
+        - 'role::virtserver'
 
 - name: Provision VM on libvirt
   hosts: [ 'vm_guests' ]
