@@ -1,0 +1,5 @@
+---
+- name: Converge
+  hosts: vm_hosts
+  roles:
+    - role: virtserver
