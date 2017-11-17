@@ -2,7 +2,8 @@ sudo: false
 language: python
 python:
   - "2.7"
-
+services:
+  - docker
 cache:
   pip: true
   directories:
@@ -12,11 +13,9 @@ before_install:
   - rm --verbose --recursive --force $HOME/.cache/pip/{http,log}
   - pip install --upgrade pip setuptools
 
-install:
-  - pip install ansible ansible-lint
-  - ansible-galaxy install --role-file requirements.yaml
+install: pip install tox-travis
 
-script: find -name "*.yaml" -print | xargs --max-args 1 ansible-lint --exclude "$HOME/.ansible/roles/"
+script: tox
 
 before_cache:
   - rm --verbose --recursive --force $HOME/.cache/pip/{http,log}
