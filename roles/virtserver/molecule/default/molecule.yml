@@ -11,6 +11,8 @@ driver:
       connection: docker
 lint:
   name: yamllint
+  options:
+    config-file: ../../.yamllint
 platforms:
   - name: deb9
     image: debian:stretch
