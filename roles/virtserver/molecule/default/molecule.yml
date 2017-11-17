@@ -3,7 +3,7 @@ dependency:
   name: galaxy
   enabled: True
   options:
-     role-file: "requirements.yaml"
+    role-file: "requirements.yaml"
 driver:
   name: docker
   options:

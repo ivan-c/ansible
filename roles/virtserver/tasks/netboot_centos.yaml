@@ -5,8 +5,8 @@
     url: "{{ centos_mirror }}/7/os/x86_64/images/pxeboot/{{ item }}"
     dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/{{ item }}"
   with_items:
-  - initrd.img
-  - vmlinuz
+    - initrd.img
+    - vmlinuz
 
 - name: Boot the VM using the PXE images
   virt_boot:

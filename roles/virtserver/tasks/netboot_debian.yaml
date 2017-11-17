@@ -4,8 +4,8 @@
     url: "{{ debian_mirror }}/debian/dists/stretch/main/installer-amd64/current/images/netboot/debian-installer/amd64/{{ item }}"
     dest: "{{ vm_image_dir }}/{{ inventory_hostname }}/{{ item }}"
   with_items:
-  - initrd.gz
-  - linux
+    - initrd.gz
+    - linux
 
 - name: Extract initial ramdisk
   command: gunzip --keep initrd.gz
