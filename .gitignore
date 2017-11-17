@@ -1,2 +1,5 @@
-# Ignore molecule testing framework files
+# Molecule testing framework files
 .molecule/
+
+# Cached python files
+__pycache__/
