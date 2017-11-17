@@ -19,7 +19,7 @@
       notify:
         - Restart networking
 
-- delegate_to: "{{ vm_host }}"
+- delegate_to: "{{ vm_host |default(omit) }}"
   # name: Create and start libvirt networking
   when: vm_network_type == 'nat'
   block:
@@ -42,7 +42,7 @@
       command: virsh net-start default
       when: '"default" not in libvirt_networks.stdout_lines'
 
-- delegate_to: "{{ vm_host }}"
+- delegate_to: "{{ vm_host |default(omit) }}"
   # name: Create prerequisite files and directories
   block:
     - name: Create a folder for VM definitions
@@ -69,14 +69,14 @@
   virt_guest:
     guest: "{{ inventory_hostname }}"
     src: "{{ vm_definitions_dir }}/{{ inventory_hostname }}.xml"
-  delegate_to: "{{ vm_host }}"
+  delegate_to: "{{ vm_host |default(omit) }}"
   register: guests
 
 - name: Create a group of unprovisioned systems
   group_by:
     key: "{{ guests.provisioning_status }}"
 
-- delegate_to: "{{ vm_host }}"
+- delegate_to: "{{ vm_host |default(omit) }}"
   when: inventory_hostname in groups['unprovisioned']|default({})
   block:
     - name: Netboot the provided OS
