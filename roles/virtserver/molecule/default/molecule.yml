@@ -1,14 +1,10 @@
 ---
 dependency:
   name: galaxy
-  enabled: True
   options:
     role-file: "requirements.yaml"
 driver:
   name: docker
-  options:
-    ansible_connection_options:
-      connection: docker
 lint:
   name: yamllint
   options:
