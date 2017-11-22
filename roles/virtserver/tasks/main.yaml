@@ -1,5 +1,5 @@
 ---
-- delegate_to: "{{ vm_host |default(omit) }}"
+- delegate_to: "{{ vm_host | default(inventory_hostname) }}"
   name: Create bridge definition
   template:
     src: libvirt-bridge.j2
@@ -8,7 +8,7 @@
     - Restart networking
   when: vm_network_type == 'bridge'
 
-- delegate_to: "{{ vm_host |default(omit) }}"
+- delegate_to: "{{ vm_host | default(inventory_hostname) }}"
   name: Create bridge network
   when: vm_network_type == 'bridge'
   block:
