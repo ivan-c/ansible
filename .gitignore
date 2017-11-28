@@ -3,3 +3,9 @@
 
 # Cached python files
 __pycache__/
+
+# Tox cache
+.tox/
+
+# molecule cache
+.cache/
