@@ -21,6 +21,10 @@ provisioner:
     vvv: "{{ lookup('env', 'MOLECULE_DEBUG') | bool }}"
   lint:
     name: ansible-lint
+  inventory:
+    group_vars:
+      vm_hosts:
+        vm_host: "{{ inventory_hostname }}"
 scenario:
   name: default
 verifier:
