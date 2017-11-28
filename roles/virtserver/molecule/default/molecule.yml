@@ -16,7 +16,9 @@ platforms:
       - vm_hosts
 provisioner:
   name: ansible
-  options: {vvv: True}
+  options:
+    # Set verbose if `--debug` passed to molecule
+    vvv: "{{ lookup('env', 'MOLECULE_DEBUG') | bool }}"
   lint:
     name: ansible-lint
 scenario:
