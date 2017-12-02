@@ -11,3 +11,4 @@ vm_domain: cact.us.eu.org
 vm_memory: 2048
 vm_vcpu: 1
 vm_network_type: nat
+vm_emulation_type: kvm

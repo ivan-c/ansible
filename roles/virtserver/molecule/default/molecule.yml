@@ -26,6 +26,7 @@ provisioner:
     group_vars:
       vm_hosts:
         vm_host: "{{ inventory_hostname }}"
+        vm_emulation_type: qemu
 scenario:
   name: default
 verifier:
