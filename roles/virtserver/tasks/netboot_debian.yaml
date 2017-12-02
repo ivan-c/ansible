@@ -34,6 +34,12 @@
   stat: path="{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
   register: preseed_initramfs
 
+- name: Install cpio
+  delegate_to: "{{ vm_host }}"
+  apt:
+    name: cpio
+    state: present
+
 - name: Append preseed file to initial ramdisk
   shell: "cp initrd initrd.preseed && find preseed/ | cpio --create --format newc --append --file initrd.preseed"
   args:
