@@ -20,6 +20,9 @@ provisioner:
   options:
     # Set verbose if `--debug` passed to molecule
     vvv: "{{ lookup('env', 'MOLECULE_DEBUG') | bool }}"
+  config_options:
+    defaults:
+      roles_path: $HOME/.ansible/roles
   lint:
     name: ansible-lint
   inventory:
