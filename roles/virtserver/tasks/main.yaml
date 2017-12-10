@@ -96,7 +96,7 @@
         name: "{{ inventory_hostname }}"
         command: status
       register: libvirt_status
-      until: "{{ libvirt_status.status == 'shutdown' }}"
+      until: libvirt_status.status == 'shutdown'
       delay: 60
       retries: 20
 
