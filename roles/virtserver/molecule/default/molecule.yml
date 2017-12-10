@@ -30,6 +30,7 @@ provisioner:
       vm_hosts:
         vm_host: "{{ inventory_hostname }}"
         vm_emulation_type: qemu
+        vm_memory: 512
 scenario:
   name: default
 verifier:
