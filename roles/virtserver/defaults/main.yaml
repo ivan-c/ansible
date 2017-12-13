@@ -7,6 +7,7 @@ ks_url: https://raw.githubusercontent.com/jhoekx/ansible-provisioning/master/exa
 debian_mirror: http://ftp.debian.org
 provisioned_os: debian
 
+vm_creation_timeout: 60
 vm_domain: cact.us.eu.org
 vm_memory: 2048
 vm_vcpu: 1

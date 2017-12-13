@@ -98,7 +98,7 @@
       register: libvirt_status
       until: libvirt_status.status == 'shutdown'
       delay: 60
-      retries: 20
+      retries: "{{ vm_creation_timeout }}"
 
     - name: Start the VM
       virt_boot:
