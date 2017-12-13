@@ -51,4 +51,4 @@
     guest: "{{ inventory_hostname }}"
     kernel: "{{ vm_image_dir }}/{{ inventory_hostname }}/linux"
     initrd: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
-    cmdline: "auto=true hostname={{ inventory_hostname }} domain={{ vm_domain }} preseed/file=/preseed/preseed.cfg"
+    cmdline: "console=ttyS0,115200n8 auto=true hostname={{ inventory_hostname }} domain={{ vm_domain }} preseed/file=/preseed/preseed.cfg"
