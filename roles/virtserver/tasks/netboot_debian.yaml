@@ -54,7 +54,7 @@
     cmdline:
       # 115200 baud, no parity, with 8 data bits
       console=ttyS0,115200n8
-      auto=true
-      hostname={{ inventory_hostname }}
-      domain={{ vm_domain }}
+      auto-install/enable=true
       preseed/file=/preseed/preseed.cfg
+      netcfg/get_hostname={{ inventory_hostname }}
+      netcfg/get_domain={{ vm_domain }}
