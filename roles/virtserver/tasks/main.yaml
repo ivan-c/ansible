@@ -1,4 +1,8 @@
 ---
+- name: Run handlers from dependent roles
+  meta: flush_handlers
+  delegate_to: "{{ vm_host }}"
+
 - delegate_to: "{{ vm_host }}"
   name: Create bridge definition
   template:
@@ -65,6 +69,11 @@
         src: libvirt_domain.xml.j2
         dest: "{{ vm_definitions_dir }}/{{ inventory_hostname }}.xml"
 
+- name: Install python-libvirt
+  apt:
+    name: python-libvirt
+    state: present
+
 - name: Create the VM
   virt_guest:
     guest: "{{ inventory_hostname }}"
@@ -87,9 +96,9 @@
         name: "{{ inventory_hostname }}"
         command: status
       register: libvirt_status
-      until: "{{ libvirt_status.status == 'shutdown' }}"
+      until: libvirt_status.status == 'shutdown'
       delay: 60
-      retries: 20
+      retries: "{{ vm_creation_timeout }}"
 
     - name: Start the VM
       virt_boot:
