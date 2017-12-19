@@ -2,3 +2,13 @@
 - name: Restart networking
   service: name=network state=restarted
   delegate_to: "{{ vm_host }}"
+
+- name: Restart virtlogd
+  service: name=virtlogd state=restarted
+  delegate_to: "{{ vm_host }}"
+  listen: Restart libvirtd
+
+- name: Restart dbus
+  service: name=dbus state=restarted
+  delegate_to: "{{ vm_host }}"
+  listen: Restart libvirtd

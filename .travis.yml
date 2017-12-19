@@ -12,6 +12,7 @@ env:
   matrix:
     - TOXENV=syntax
     - TOXENV=lint
+    - TOXENV=test
 
 before_install:
   - rm --verbose --recursive --force $HOME/.cache/pip/{http,log}

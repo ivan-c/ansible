@@ -5,8 +5,11 @@ centos_mirror: http://ftp.belnet.be/ftp.centos.org
 ks_url: https://raw.githubusercontent.com/jhoekx/ansible-provisioning/master/examples/centos-on-libvirt/templates/centos7.ks
 
 debian_mirror: http://ftp.debian.org
+provisioned_os: debian
 
+vm_creation_timeout: 60
 vm_domain: cact.us.eu.org
 vm_memory: 2048
 vm_vcpu: 1
 vm_network_type: nat
+vm_type: kvm

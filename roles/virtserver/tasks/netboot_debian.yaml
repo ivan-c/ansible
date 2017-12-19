@@ -34,6 +34,12 @@
   stat: path="{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
   register: preseed_initramfs
 
+- name: Install cpio
+  delegate_to: "{{ vm_host }}"
+  apt:
+    name: cpio
+    state: present
+
 - name: Append preseed file to initial ramdisk
   shell: "cp initrd initrd.preseed && find preseed/ | cpio --create --format newc --append --file initrd.preseed"
   args:
@@ -45,4 +51,10 @@
     guest: "{{ inventory_hostname }}"
     kernel: "{{ vm_image_dir }}/{{ inventory_hostname }}/linux"
     initrd: "{{ vm_image_dir }}/{{ inventory_hostname }}/initrd.preseed"
-    cmdline: "auto=true hostname={{ inventory_hostname }} domain={{ vm_domain }} preseed/file=/preseed/preseed.cfg"
+    cmdline:
+      # 115200 baud, no parity, with 8 data bits
+      console=ttyS0,115200n8
+      auto-install/enable=true
+      preseed/file=/preseed/preseed.cfg
+      netcfg/get_hostname={{ inventory_hostname }}
+      netcfg/get_domain={{ vm_domain }}
