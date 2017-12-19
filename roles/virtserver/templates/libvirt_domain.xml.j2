@@ -1,4 +1,4 @@
-<domain type='{{ vm_emulation_type }}'>
+<domain type='{{ vm_type }}'>
     <name>{{ inventory_hostname }}</name>
     <memory>{{ vm_memory|int * 1024 }}</memory>
     <vcpu>{{ vm_vcpu|int }}</vcpu>
@@ -23,7 +23,7 @@
     <on_crash>restart</on_crash>
 
     <devices>
-{% if vm_emulation_type  == 'qemu' %}
+{% if vm_type  == 'qemu' %}
         <emulator>/usr/bin/qemu-system-x86_64</emulator>
 {% endif %}
         <disk type='block' device='disk'>
