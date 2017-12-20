@@ -89,7 +89,7 @@
   when: inventory_hostname in groups['unprovisioned']|default({})
   block:
     - name: Netboot the provided OS
-      include: "netboot_{{ provisioned_os }}.yaml"
+      include_tasks: "netboot_{{ provisioned_os }}.yaml"
 
     - name: Wait until the VM stops
       virt:
