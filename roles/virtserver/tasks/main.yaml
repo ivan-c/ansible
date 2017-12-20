@@ -24,7 +24,7 @@
         - Restart networking
 
 - delegate_to: "{{ vm_host }}"
-  # name: Create and start libvirt networking
+  name: Create and start libvirt networking
   when: vm_network_type == 'nat'
   block:
     - name: List all libvirt networks
@@ -47,7 +47,7 @@
       when: '"default" not in libvirt_networks.stdout_lines'
 
 - delegate_to: "{{ vm_host }}"
-  # name: Create prerequisite files and directories
+  name: Create VM files and directories
   block:
     - name: Create a folder for VM definitions
       file:
