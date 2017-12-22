@@ -11,4 +11,3 @@
 - name: Restart dbus
   service: name=dbus state=restarted
   delegate_to: "{{ vm_host }}"
-  listen: Restart libvirtd
