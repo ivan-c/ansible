@@ -3,3 +3,17 @@
   hosts: vm_hosts
   roles:
     - role: virtserver
+  pre_tasks:
+    - name: Install squid-deb-proxy-client
+      apt: name=squid-deb-proxy-client state=present
+      notify:
+        - Restart dbus
+        - Restart avahi
+  handlers:
+    - name: Restart dbus
+      service: name=dbus state=restarted
+      delegate_to: "{{ vm_host }}"
+
+    - name: Restart avahi
+      service: name=avahi-daemon state=restarted
+      delegate_to: "{{ vm_host }}"
