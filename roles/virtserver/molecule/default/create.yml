@@ -5,6 +5,9 @@
   gather_facts: False
   no_log: "{{ not lookup('env', 'MOLECULE_DEBUG') | bool }}"
   vars:
+    # Pass proxy information to test environment, if set
+    _http_proxy: "{{ lookup('env', 'http_proxy') }}"
+
     molecule_file: "{{ lookup('env', 'MOLECULE_FILE') }}"
     molecule_ephemeral_directory: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}"
     molecule_scenario_directory: "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}"
