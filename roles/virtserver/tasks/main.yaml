@@ -10,6 +10,7 @@
   delegate_to: "{{ vm_host }}"
   notify:
     - Restart networking
+    - Update network facts
   when: vm_network_type == 'bridge'
 
 - name: Create and start libvirt networking
