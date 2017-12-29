@@ -3,17 +3,17 @@
   meta: flush_handlers
   delegate_to: "{{ vm_host }}"
 
-- delegate_to: "{{ vm_host }}"
-  name: Create bridge definition
+- name: Create bridge definition
   template:
     src: libvirt-bridge.j2
     dest: "/etc/network/interfaces.d/libvirt-bridge"
+  delegate_to: "{{ vm_host }}"
   notify:
     - Restart networking
   when: vm_network_type == 'bridge'
 
-- delegate_to: "{{ vm_host }}"
-  name: Create and start libvirt networking
+- name: Create and start libvirt networking
+  delegate_to: "{{ vm_host }}"
   when: vm_network_type == 'nat'
   block:
     - name: List all libvirt networks
@@ -35,8 +35,8 @@
       command: virsh net-start default
       when: '"default" not in libvirt_networks.stdout_lines'
 
-- delegate_to: "{{ vm_host }}"
-  name: Create VM files and directories
+- name: Create VM files and directories
+  delegate_to: "{{ vm_host }}"
   block:
     - name: Create a folder for VM definitions
       file:
@@ -74,7 +74,8 @@
   group_by:
     key: "{{ guests.provisioning_status }}"
 
-- delegate_to: "{{ vm_host }}"
+- name: Provision the VM
+  delegate_to: "{{ vm_host }}"
   when: inventory_hostname in groups['unprovisioned']|default({})
   block:
     - name: Netboot the provided OS
