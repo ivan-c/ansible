@@ -3,6 +3,13 @@
   service: name=network state=restarted
   delegate_to: "{{ vm_host }}"
 
+- name: Update network facts
+  setup:
+    gather_subset:
+      - '!all'
+      - '!min'
+      - network
+
 - name: Restart virtlogd
   service: name=virtlogd state=restarted
   delegate_to: "{{ vm_host }}"
