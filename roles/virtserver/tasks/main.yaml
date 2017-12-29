@@ -13,17 +13,6 @@
   when: vm_network_type == 'bridge'
 
 - delegate_to: "{{ vm_host }}"
-  name: Create bridge network
-  when: vm_network_type == 'bridge'
-  block:
-    - name: Create bridge definition
-      template:
-        src: libvirt-bridge.j2
-        dest: "/etc/network/interfaces.d/libvirt-bridge"
-      notify:
-        - Restart networking
-
-- delegate_to: "{{ vm_host }}"
   name: Create and start libvirt networking
   when: vm_network_type == 'nat'
   block:
