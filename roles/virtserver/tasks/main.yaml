@@ -26,7 +26,8 @@
       command: virsh net-define /etc/libvirt/qemu/networks/default.xml
       when: '"default" not in all_libvirt_networks.stdout_lines'
       run_once: true
-
+      notify:
+        - Update network facts
     - name: List enabled libvirt networks
       command: virsh net-list --name
       register: libvirt_networks
@@ -35,6 +36,12 @@
     - name: Start the default network
       command: virsh net-start default
       when: '"default" not in libvirt_networks.stdout_lines'
+      notify:
+        - Update network facts
+
+- name: Flush network handlers
+  meta: flush_handlers
+  delegate_to: "{{ vm_host }}"
 
 - name: Create VM files and directories
   delegate_to: "{{ vm_host }}"
