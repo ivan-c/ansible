@@ -39,3 +39,5 @@ verifier:
   name: testinfra
   lint:
     name: flake8
+    options:
+      config: ../../.flake8
