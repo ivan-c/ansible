@@ -21,3 +21,8 @@ def test_apt_cacher_ng_running_and_enabled(host):
     apt_cacher_ng = host.service("apt-cacher-ng")
     assert apt_cacher_ng.is_enabled
     assert apt_cacher_ng.is_running
+
+
+def test_apt_cacher_ng_caching_provisioning(host):
+    """Test whether VM guest used apt-cacher-ng on VM host during provisioning"""
+    assert host.file("/var/log/apt-cacher-ng/apt-cacher.log").contains("base-installer")
