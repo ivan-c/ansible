@@ -4,6 +4,10 @@
   src: https://github.com/debops/ansible-libvirtd
   version: v0.3.3
 
+- name: debops.apt_cacher_ng
+  src: https://github.com/debops/ansible-apt_cacher_ng
+  version: v0.2.2
+
 - name: ansible-provisioning
   src: https://github.com/ivan-c/ansible-provisioning
   version: 038e4a179f278ab60d918c47b7e7efb72bcb1da2

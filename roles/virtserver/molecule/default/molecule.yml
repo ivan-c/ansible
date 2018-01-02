@@ -29,6 +29,8 @@ provisioner:
     group_vars:
       vm_hosts:
         vm_host: "{{ inventory_hostname }}"
+        # Pass given proxy to apt-cacher-ng running on VM host
+        apt_cacher_ng__proxy: "{{ lookup('env', 'http_proxy') }}"
         vm_type: qemu
         vm_memory: 2048
         vm_vcpu: 2
@@ -39,3 +41,5 @@ verifier:
   name: testinfra
   lint:
     name: flake8
+    options:
+      config: ../../.flake8

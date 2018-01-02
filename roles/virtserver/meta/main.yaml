@@ -2,3 +2,4 @@
 dependencies:
   - { role: ansible-provisioning }
   - { role: debops.libvirtd }
+  - { role: debops.apt_cacher_ng }
