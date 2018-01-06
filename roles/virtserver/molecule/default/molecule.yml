@@ -31,7 +31,7 @@ provisioner:
         vm_host: "{{ inventory_hostname }}"
         # Pass given proxy to apt-cacher-ng running on VM host
         apt_cacher_ng__proxy: "{{ lookup('env', 'http_proxy') }}"
-        vm_type: qemu
+        vm_type: kvm
         vm_memory: 2048
         vm_vcpu: 2
         vm_creation_timeout: 120
