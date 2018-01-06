@@ -3,3 +3,19 @@
   hosts: vm_hosts
   roles:
     - role: virtserver
+
+  pre_tasks:
+    - name: Create kvm group
+      delegate_to: "{{ vm_host }}"
+      when: vm_type == 'kvm'
+      block:
+        - name: Get kvm device info
+          stat: path=/dev/kvm
+          register: kvm_dev_info
+
+        - name: Add/update kvm group by gid
+          group:
+            name: kvm
+            gid: "{{ kvm_dev_info.stat.gid }}"
+            state: present
+          when: "'gr_name' not in kvm_dev_info.stat"

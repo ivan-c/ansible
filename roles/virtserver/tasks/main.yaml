@@ -3,6 +3,7 @@
   meta: flush_handlers
   delegate_to: "{{ vm_host }}"
 
+
 - name: Create bridge definition
   template:
     src: libvirt-bridge.j2
