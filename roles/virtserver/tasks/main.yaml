@@ -3,13 +3,6 @@
   meta: flush_handlers
   delegate_to: "{{ vm_host }}"
 
-- name: Add administrators to kvm access group
-  user:
-    name: '{{ item }}'
-    groups: kvm
-    append: yes
-  with_items: '{{ libvirtd__admins }}'
-  when: libvirtd__admins|d() and vm_type == 'kvm'
 
 - name: Create bridge definition
   template:
