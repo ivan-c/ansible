@@ -104,6 +104,14 @@
         guest: "{{ inventory_hostname }}"
         boot: hd
   rescue:
+    - name: Dump libvirt logs
+      command:
+        find /var/log/libvirt/
+          -type f
+          -name '*.log'
+          -printf '\n%p\n'
+          -exec cat {} \;
+
     - name: Poweroff any partially provisioned VMs
       virt:
         name: "{{ inventory_hostname }}"
