@@ -1,0 +1,50 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: "requirements.yaml"
+lint:
+  name: yamllint
+  options:
+    config-file: ../../.yamllint
+platforms:
+  - name: deb9
+    image: debian:stretch
+    groups:
+      - vm_hosts
+    privileged: True
+provisioner:
+  name: ansible
+  options:
+    # Set verbose if `--debug` passed to molecule
+    vvv: "{{ lookup('env', 'MOLECULE_DEBUG') | bool }}"
+  config_options:
+    defaults:
+      roles_path: $HOME/.ansible/roles
+  inventory:
+    group_vars:
+      all:
+        # Pass given proxy to apt-cacher-ng running on VM host
+        apt_cacher_ng__proxy: "{{ lookup('env', 'http_proxy') }}"
+      vm_hosts:
+        vm_host: "{{ inventory_hostname }}"
+        vm_type: qemu
+        vm_memory: 2048
+        vm_vcpu: 2
+        vm_creation_timeout: 120
+  playbooks:
+    prepare: ../default/prepare.yml
+    create: ../default/create.yml
+    converge: ../default/playbook.yml
+    destroy: ../default/destroy.yml
+scenario:
+  name: qemu
+verifier:
+  name: testinfra
+  directory: ../default/tests
+  options:
+    v: "${MOLECULE_DEBUG:-false}"
+  lint:
+    name: flake8
+    options:
+      config: ../../.flake8
