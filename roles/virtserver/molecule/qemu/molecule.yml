@@ -39,7 +39,9 @@ provisioner:
     destroy: ../default/destroy.yml
 scenario:
   name: qemu
+  # Install dependencies before linting, otherwise missing modules will cause error
   test_sequence:
+    - dependency
     - lint
     - destroy
     - dependency

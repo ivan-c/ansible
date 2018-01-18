@@ -38,7 +38,9 @@ provisioner:
         vm_creation_timeout: 120
 scenario:
   name: default
+  # Install dependencies before linting, otherwise missing modules will cause error
   test_sequence:
+    - dependency
     - lint
     - destroy
     - dependency
