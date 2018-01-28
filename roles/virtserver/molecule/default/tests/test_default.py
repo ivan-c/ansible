@@ -46,7 +46,12 @@ def test_vm_started(host):
     vars = host.ansible.get_variables()
     domain_log = "/var/log/libvirt/qemu/{inventory_hostname}.log".format(**vars)
 
-    assert host.file(domain_log).contains("shutting down, reason=shutdown")
-    assert host.file(domain_log).contains(
-        "starting up libvirt .* hostname: {inventory_hostname}".format(**vars)
-    )
+    try:
+        assert host.file(domain_log).contains("shutting down, reason=shutdown")
+        assert host.file(domain_log).contains(
+            "starting up libvirt .* hostname: {inventory_hostname}".format(**vars)
+        )
+    # Dump log on failure
+    except:
+        print host.file(domain_log).content
+        raise
