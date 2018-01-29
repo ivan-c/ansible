@@ -16,7 +16,10 @@ def test_apt_cacher_ng_running_and_enabled(host):
 
 def test_apt_cacher_ng_caching_provisioning(host):
     """Test whether VM guest used apt-cacher-ng on VM host during provisioning"""
-    assert host.file("/var/log/apt-cacher-ng/apt-cacher.log").contains("base-installer")
+    apt_cacher_log = "/var/log/apt-cacher-ng/apt-cacher.log"
+
+    assert host.file(apt_cacher_log).exists
+    assert host.file(apt_cacher_log).contains("base-installer")
 
 
 def test_libvirtd_is_installed(host):
@@ -46,6 +49,7 @@ def test_vm_started(host):
     vars = host.ansible.get_variables()
     domain_log = "/var/log/libvirt/qemu/{inventory_hostname}.log".format(**vars)
 
+    assert host.file(domain_log).is_file
     try:
         assert host.file(domain_log).contains("shutting down, reason=shutdown")
         assert host.file(domain_log).contains(
