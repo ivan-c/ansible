@@ -118,11 +118,9 @@
       include_tasks: "netboot_{{ provisioned_os }}.yaml"
 
     - name: Wait until the VM stops
-      virt:
-        name: "{{ inventory_hostname }}"
-        command: status
+      command: "virsh domstate {{ inventory_hostname }}"
       register: libvirt_status
-      until: libvirt_status.status == 'shutdown'
+      until: libvirt_status.stdout == 'shut off'
       delay: 60
       retries: "{{ vm_creation_timeout }}"
 
