@@ -55,3 +55,7 @@
         volumes: "{{ item.volumes | default(omit) }}"
         capabilities: "{{ item.capabilities | default(omit) }}"
       with_items: "{{ molecule_yml.platforms }}"
+      tmpfs:
+        - /var/lib/libvirt:rw,noexec,nosuid,nodev
+        - /var/cache:rw,noexec,nosuid,nodev
+        - /tmp:rw,noexec,nosuid,nodev
