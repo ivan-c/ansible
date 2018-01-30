@@ -35,7 +35,7 @@ provisioner:
         vm_type: kvm
         vm_memory: 2048
         vm_vcpu: 2
-        vm_creation_timeout: 120
+        vm_creation_timeout: 30
 scenario:
   name: default
 verifier:
