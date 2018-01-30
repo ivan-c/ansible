@@ -1,0 +1,18 @@
+# CircleCI configuration file
+# https://circleci.com/docs/2.0/configuration-reference/#version
+---
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Update pip & setuptools
+          command: pip install --upgrade pip setuptools
+      - run:
+          name: Install tox
+          command: pip install tox
+      - run:
+          name: Run tests
+          command: tox -e qemu-scenario
