@@ -121,3 +121,7 @@
       virt_guest:
         guest: "{{ inventory_hostname }}"
         state: "absent"
+
+    - name: Fail provisioning after logs dumped
+      fail:
+        msg: "Error provisioning {{ inventory_hostname }}"
