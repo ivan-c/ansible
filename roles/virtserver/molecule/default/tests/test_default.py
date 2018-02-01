@@ -56,12 +56,7 @@ def test_vm_started(host):
     ) == 'running (booted)'
 
     assert host.file(domain_log).is_file
-    try:
-        assert host.file(domain_log).contains("shutting down, reason=shutdown")
-    # Dump log on failure
-    except:
-        print host.file(domain_log).content
-        raise
+    assert host.file(domain_log).contains("shutting down, reason=shutdown")
 
 
 @pytest.mark.xfail
@@ -76,4 +71,9 @@ def test_libvirt_logs_no_errors(host, log_filename):
     log_filename = log_filename.format(**vars)
 
     assert host.file(log_filename).is_file
-    assert not host.file(log_filename).contains("error")
+    try:
+        assert not host.file(log_filename).contains("error")
+    except:
+        # Dump log on failure
+        print host.file(log_filename).content
+        raise
