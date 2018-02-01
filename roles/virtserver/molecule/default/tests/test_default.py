@@ -1,6 +1,7 @@
 import os
 import stat
 from testinfra.utils import ansible_runner
+import pytest
 
 testinfra_hosts = ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']
@@ -60,3 +61,17 @@ def test_vm_started(host):
     except:
         print host.file(domain_log).content
         raise
+
+
+@pytest.mark.parametrize("log_filename", [
+    "/var/log/libvirt/libvirtd.log",
+    "/var/log/libvirt/virtlogd.log",
+    "/var/log/libvirt/qemu/{inventory_hostname}.log",
+])
+def test_libvirt_logs_no_errors(host, log_filename):
+    """Test that there are no errors in libvirt logs"""
+    vars = host.ansible.get_variables()
+    log_filename = log_filename.format(**vars)
+
+    assert host.file(log_filename).is_file
+    assert not host.file(log_filename).contains("error")
