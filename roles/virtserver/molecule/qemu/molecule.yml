@@ -44,6 +44,7 @@ verifier:
   directory: ../default/tests
   options:
     v: "${MOLECULE_DEBUG:-false}"
+    s: True
   lint:
     name: flake8
     options:

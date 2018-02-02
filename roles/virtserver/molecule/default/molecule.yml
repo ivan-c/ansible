@@ -42,6 +42,7 @@ verifier:
   name: testinfra
   options:
     v: "${MOLECULE_DEBUG:-false}"
+    s: True
   lint:
     name: flake8
     options:

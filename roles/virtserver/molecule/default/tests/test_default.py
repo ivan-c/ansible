@@ -75,5 +75,5 @@ def test_libvirt_logs_no_errors(host, log_filename):
         assert not host.file(log_filename).contains("error")
     except:
         # Dump log on failure
-        print host.file(log_filename).content
+        print "\n", host.file(log_filename).content
         raise
