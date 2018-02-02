@@ -12,6 +12,8 @@ platforms:
     image: debian:stretch
     groups:
       - vm_hosts
+      - vm_hosts__molecule
+      - emulated_guests
     privileged: True
 provisioner:
   name: ansible
@@ -22,16 +24,8 @@ provisioner:
     defaults:
       roles_path: $HOME/.ansible/roles
   inventory:
-    group_vars:
-      all:
-        # Pass given proxy to apt-cacher-ng running on VM host
-        apt_cacher_ng__proxy: "{{ lookup('env', 'http_proxy') }}"
-      vm_hosts:
-        vm_host: "{{ inventory_hostname }}"
-        vm_type: qemu
-        vm_memory: 2048
-        vm_vcpu: 2
-        vm_creation_timeout: 60
+    links:
+      group_vars: ../../../../../group_vars/
   playbooks:
     prepare: ../default/prepare.yml
     create: ../default/create.yml
