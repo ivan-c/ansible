@@ -67,11 +67,6 @@
         src: libvirt_domain.xml.j2
         dest: "{{ vm_definitions_dir }}/{{ inventory_hostname }}.xml"
 
-- name: Install python-libvirt
-  apt:
-    name: python-libvirt
-    state: present
-
 - name: Create the VM
   virt_guest:
     guest: "{{ inventory_hostname }}"
