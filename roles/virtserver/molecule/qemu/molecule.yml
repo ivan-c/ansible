@@ -31,7 +31,7 @@ provisioner:
         vm_type: qemu
         vm_memory: 2048
         vm_vcpu: 2
-        vm_creation_timeout: 120
+        vm_creation_timeout: 60
   playbooks:
     prepare: ../default/prepare.yml
     create: ../default/create.yml
@@ -44,6 +44,7 @@ verifier:
   directory: ../default/tests
   options:
     v: "${MOLECULE_DEBUG:-false}"
+    s: True
   lint:
     name: flake8
     options:

@@ -3,8 +3,6 @@ dependency:
   name: galaxy
   options:
     role-file: "requirements.yaml"
-driver:
-  name: docker
 lint:
   name: yamllint
   options:
@@ -23,8 +21,6 @@ provisioner:
   config_options:
     defaults:
       roles_path: $HOME/.ansible/roles
-  lint:
-    name: ansible-lint
   inventory:
     group_vars:
       all:
@@ -35,13 +31,14 @@ provisioner:
         vm_type: kvm
         vm_memory: 2048
         vm_vcpu: 2
-        vm_creation_timeout: 120
+        vm_creation_timeout: 30
 scenario:
   name: default
 verifier:
   name: testinfra
   options:
     v: "${MOLECULE_DEBUG:-false}"
+    s: True
   lint:
     name: flake8
     options:
