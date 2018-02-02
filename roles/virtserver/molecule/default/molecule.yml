@@ -3,8 +3,6 @@ dependency:
   name: galaxy
   options:
     role-file: "requirements.yaml"
-driver:
-  name: docker
 lint:
   name: yamllint
   options:
@@ -23,8 +21,6 @@ provisioner:
   config_options:
     defaults:
       roles_path: $HOME/.ansible/roles
-  lint:
-    name: ansible-lint
   inventory:
     group_vars:
       all:
