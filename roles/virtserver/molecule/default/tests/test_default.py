@@ -77,3 +77,13 @@ def test_libvirt_logs_no_errors(host, log_filename):
         # Dump log on failure
         print "\n", host.file(log_filename).content
         raise
+
+
+def test_libvirt_dmidecode(host):
+    """Test libvirt is able to find dmidecode binary"""
+    dmidecode = host.package("dmidecode")
+    assert dmidecode.is_installed
+
+    libvirtd_log = "/var/log/libvirt/libvirtd.log"
+    assert host.file(libvirtd_log).is_file
+    assert not host.file(libvirtd_log).contains("dmidecode")

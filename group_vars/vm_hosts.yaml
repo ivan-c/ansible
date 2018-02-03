@@ -1,3 +1,4 @@
 ---
 libvirtd__packages:
-  - 'python-libvirt'
+  - python-libvirt
+  - dmidecode
