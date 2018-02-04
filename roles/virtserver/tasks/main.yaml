@@ -1,4 +1,9 @@
 ---
+
+- name: Start dbus
+  service: name=dbus state=started
+  delegate_to: "{{ vm_host }}"
+
 - name: Run handlers from dependent roles
   meta: flush_handlers
   delegate_to: "{{ vm_host }}"

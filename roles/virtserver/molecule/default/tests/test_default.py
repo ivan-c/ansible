@@ -87,3 +87,18 @@ def test_libvirt_dmidecode(host):
     libvirtd_log = "/var/log/libvirt/libvirtd.log"
     assert host.file(libvirtd_log).is_file
     assert not host.file(libvirtd_log).contains("dmidecode")
+
+
+def test_dbus(host):
+    """Test dbus service and availability for libvirt"""
+
+    dbus = host.service("dbus")
+    assert dbus.is_enabled
+    assert dbus.is_running
+
+    dbus_socket = '/var/run/dbus/system_bus_socket'
+    assert host.file(dbus_socket).exists
+    assert host.file(dbus_socket).is_socket
+
+    libvirtd_log = "/var/log/libvirt/libvirtd.log"
+    assert not host.file(libvirtd_log).contains("DBus")
