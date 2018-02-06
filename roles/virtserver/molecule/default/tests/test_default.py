@@ -102,3 +102,13 @@ def test_dbus(host):
 
     libvirtd_log = "/var/log/libvirt/libvirtd.log"
     assert not host.file(libvirtd_log).contains("DBus")
+
+
+def test_dbus_logind(host):
+    """Test logind enabled and running"""
+
+    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L544
+    assert 'org.freedesktop.login1' in host.check_output("dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus 'org.freedesktop.DBus.ListActivatableNames'")
+
+    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L548
+    assert 'org.freedesktop.login1' in host.check_output("dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus 'org.freedesktop.DBus.ListNames'")
