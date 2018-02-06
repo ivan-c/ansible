@@ -4,23 +4,35 @@
   service: name=dbus state=started
   delegate_to: "{{ vm_host }}"
 
-- name: list started services
-  command: "dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus 'org.freedesktop.DBus.ListNames'"
+- name: List Dbus-connected services
+  command:
+    dbus-send
+      --system
+      --print-reply
+      --dest=org.freedesktop.DBus
+    /org/freedesktop/DBus
+    'org.freedesktop.DBus.ListNames'
   ignore_errors: true
-  register: running_services
+  register: dbus_running_services
 
 # libvirt will not query hardware supported operations unless logind is already connected to Dbus
 # sending a Dbus message to logind seems to accomplish this
-# logind cannot be started with `service` or `systemctl` since systemd-shim is used instead of systemd inside docker
+# since systemd-shim is used instead of systemd inside docker
+# logind cannot be started with `service` or `systemctl`
 - name: Ensure logind started
-  command: "dbus-send --system --print-reply --dest=org.freedesktop.login1 /org/freedesktop/login1 'org.freedesktop.login1.Manager.ListSessions'"
+  command:
+    dbus-send
+      --system
+      --print-reply
+      --dest=org.freedesktop.login1
+    /org/freedesktop/login1
+    'org.freedesktop.login1.Manager.ListSessions'
   delegate_to: "{{ vm_host }}"
-  when: "'org.freedesktop.login1' not in running_services.stdout"
+  when: "'org.freedesktop.login1' not in dbus_running_services.stdout"
 
 - name: Run handlers from dependent roles
   meta: flush_handlers
   delegate_to: "{{ vm_host }}"
-
 
 - name: Create bridge definition
   template:
