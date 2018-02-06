@@ -16,6 +16,9 @@ platforms:
     privileged: True
 provisioner:
   name: ansible
+  lint:
+    name: ansible-lint
+    enabled: False
   options:
     # Set verbose if `--debug` passed to molecule
     vvv: "{{ lookup('env', 'MOLECULE_DEBUG') | bool }}"
@@ -27,6 +30,18 @@ provisioner:
       group_vars: ../../../../../group_vars/
 scenario:
   name: default
+  test_sequence:
+    # - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - destroy
 verifier:
   name: testinfra
   options:
