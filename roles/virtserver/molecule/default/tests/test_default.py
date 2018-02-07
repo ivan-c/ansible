@@ -110,14 +110,14 @@ def test_dbus(host):
 def test_dbus_logind(host, method_name):
     """Test logind enabled and running via Dbus"""
 
-    command = " ".join(
+    command = " ".join((
         "dbus-send",
         "--system",
         "--print-reply",
         "--dest=org.freedesktop.DBus",
         "/org/freedesktop/DBus",
         "'org.freedesktop.DBus.{}'".format(method_name),
-    )
+    ))
     assert 'org.freedesktop.login1' in host.check_output(command)
 
 
