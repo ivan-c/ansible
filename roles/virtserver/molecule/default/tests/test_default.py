@@ -100,5 +100,30 @@ def test_dbus(host):
     assert host.file(dbus_socket).exists
     assert host.file(dbus_socket).is_socket
 
+
+@pytest.mark.parametrize("method_name", [
+    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L544
+    "ListActivatableNames",
+    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L548
+    "ListNames",
+])
+def test_dbus_logind(host, method_name):
+    """Test logind enabled and running via Dbus"""
+
+    command = " ".join((
+        "dbus-send",
+        "--system",
+        "--print-reply",
+        "--dest=org.freedesktop.DBus",
+        "/org/freedesktop/DBus",
+        "'org.freedesktop.DBus.{}'".format(method_name),
+    ))
+    assert 'org.freedesktop.login1' in host.check_output(command)
+
+
+def libvirt_dbus(host):
+    """Test that libvirt successfully probed suspend types"""
+
     libvirtd_log = "/var/log/libvirt/libvirtd.log"
-    assert not host.file(libvirtd_log).contains("DBus")
+    assert host.file(libvirtd_log).is_file
+    assert not host.file(libvirtd_log).contains("Cannot probe for supported suspend types")
