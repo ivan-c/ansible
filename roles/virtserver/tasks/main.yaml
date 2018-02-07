@@ -1,35 +1,36 @@
 ---
-
-- name: Start dbus
-  service: name=dbus state=started
-  delegate_to: "{{ vm_host }}"
-
-- name: List Dbus-connected services
-  command:
-    dbus-send
-      --system
-      --print-reply
-      --dest=org.freedesktop.DBus
-    /org/freedesktop/DBus
-    'org.freedesktop.DBus.ListNames'
-  ignore_errors: true
-  register: dbus_running_services
-  changed_when: false
-
 # Libvirt will not query hardware supported operations unless logind is already connected to Dbus
 # Sending a Dbus message to logind seems to accomplish this
 # Since systemd-shim is used instead of systemd inside docker,
 # logind cannot be started with `service` or `systemctl`
-- name: Ensure logind started
-  command:
-    dbus-send
-      --system
-      --print-reply
-      --dest=org.freedesktop.login1
-    /org/freedesktop/login1
-    'org.freedesktop.login1.Manager.ListSessions'
+- name: Docker testing shim
   delegate_to: "{{ vm_host }}"
-  when: "'org.freedesktop.login1' not in dbus_running_services.stdout"
+  when: lookup('env', 'MOLECULE_DRIVER_NAME') == 'docker'
+  block:
+    - name: Start dbus
+      service: name=dbus state=started
+
+    - name: List Dbus-connected services
+      command:
+        dbus-send
+          --system
+          --print-reply
+          --dest=org.freedesktop.DBus
+        /org/freedesktop/DBus
+        'org.freedesktop.DBus.ListNames'
+      ignore_errors: true
+      register: dbus_running_services
+      changed_when: false
+
+    - name: Ensure logind started
+      command:
+        dbus-send
+          --system
+          --print-reply
+          --dest=org.freedesktop.login1
+        /org/freedesktop/login1
+        'org.freedesktop.login1.Manager.ListSessions'
+      when: "'org.freedesktop.login1' not in dbus_running_services.stdout"
 
 - name: Run handlers from dependent roles
   meta: flush_handlers
