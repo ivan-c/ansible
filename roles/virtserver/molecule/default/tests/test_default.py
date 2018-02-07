@@ -101,14 +101,24 @@ def test_dbus(host):
     assert host.file(dbus_socket).is_socket
 
 
-def test_dbus_logind(host):
+@pytest.mark.parametrize("method_name", [
+    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L544
+    "ListActivatableNames",
+    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L548
+    "ListNames",
+])
+def test_dbus_logind(host, method_name):
     """Test logind enabled and running via Dbus"""
 
-    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L544
-    assert 'org.freedesktop.login1' in host.check_output("dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus 'org.freedesktop.DBus.ListActivatableNames'")
-
-    # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L548
-    assert 'org.freedesktop.login1' in host.check_output("dbus-send --system --print-reply --dest=org.freedesktop.DBus /org/freedesktop/DBus 'org.freedesktop.DBus.ListNames'")
+    command = " ".join(
+        "dbus-send",
+        "--system",
+        "--print-reply",
+        "--dest=org.freedesktop.DBus",
+        "/org/freedesktop/DBus",
+        "'org.freedesktop.DBus.{}'".format(method_name),
+    )
+    assert 'org.freedesktop.login1' in host.check_output(command)
 
 
 def libvirt_dbus(host):
