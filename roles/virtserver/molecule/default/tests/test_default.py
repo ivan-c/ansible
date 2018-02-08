@@ -86,7 +86,7 @@ def test_libvirt_dmidecode(host):
 
     libvirtd_log = "/var/log/libvirt/libvirtd.log"
     assert host.file(libvirtd_log).is_file
-    assert not host.file(libvirtd_log).contains("dmidecode")
+    assert not host.file(libvirtd_log).contains("Failed to find path for dmidecode binary")
 
 
 def test_dbus(host):
