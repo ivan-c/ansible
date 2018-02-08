@@ -121,7 +121,7 @@ def test_dbus_logind(host, method_name):
     assert 'org.freedesktop.login1' in host.check_output(command)
 
 
-def libvirt_dbus(host):
+def test_libvirt_dbus(host):
     """Test that libvirt successfully probed suspend types"""
 
     libvirtd_log = "/var/log/libvirt/libvirtd.log"
