@@ -32,6 +32,16 @@
         'org.freedesktop.login1.Manager.ListSessions'
       when: "'org.freedesktop.login1' not in dbus_running_services.stdout"
 
+    - name: Ensure machined started
+      command:
+        dbus-send
+          --system
+          --print-reply
+          --dest=org.freedesktop.machine1
+        /org/freedesktop/machine1
+        'org.freedesktop.machine1.Manager.ListMachines'
+      when: "'org.freedesktop.machine1' not in dbus_running_services.stdout"
+
 - name: Run handlers from dependent roles
   meta: flush_handlers
   delegate_to: "{{ vm_host }}"
