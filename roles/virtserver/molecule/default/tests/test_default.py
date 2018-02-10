@@ -107,7 +107,7 @@ def test_dbus(host):
     # https://github.com/libvirt/libvirt/blob/v3.0.0/src/util/virsystemd.c#L548
     "ListNames",
 ])
-def test_dbus_logind(host, method_name):
+def test_dbus_services(host, method_name):
     """Test logind enabled and running via Dbus"""
 
     command = " ".join((
@@ -119,6 +119,7 @@ def test_dbus_logind(host, method_name):
         "'org.freedesktop.DBus.{}'".format(method_name),
     ))
     assert 'org.freedesktop.login1' in host.check_output(command)
+    assert 'org.freedesktop.machine1' in host.check_output(command)
 
 
 def test_libvirt_dbus(host):
