@@ -2,3 +2,4 @@
 libvirtd__packages:
   - python-libvirt
   - dmidecode
+  - systemd-container
