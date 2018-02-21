@@ -13,3 +13,8 @@ vm_memory: 2048
 vm_vcpu: 1
 vm_network_type: nat
 vm_type: kvm
+
+# debops.libvirtd
+libvirtd__packages:
+  - python-libvirt
+  - dmidecode
