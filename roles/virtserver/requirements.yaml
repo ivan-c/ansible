@@ -9,6 +9,11 @@
   src: https://github.com/debops/ansible-apt_cacher_ng
   version: v0.2.2
 
+# centralized logging
+- name: debops.rsyslog
+  src: https://github.com/debops/ansible-rsyslog
+  version: v0.2.1
+
 - name: ansible-provisioning
   src: https://github.com/ivan-c/ansible-provisioning
   version: 038e4a179f278ab60d918c47b7e7efb72bcb1da2

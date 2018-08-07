@@ -3,3 +3,14 @@ dependencies:
   - { role: ansible-provisioning }
   - { role: debops.libvirtd }
   - { role: debops.apt_cacher_ng }
+  - role: debops.rsyslog
+    # Enable network input channels and storage of remote logs in filesystem
+    rsyslog__capabilities: [ 'network', 'remote-files' ]
+
+    # Specify which subnets can send remote logs through the firewall
+    rsyslog__host_allow: [ '192.0.2.0/24', '2001:db8::/32' ]
+
+    # Mask log forwarding configuration defined elsewhere
+    rsyslog__forward: []
+    rsyslog__group_forward: []
+    rsyslog__host_forward: []

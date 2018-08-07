@@ -15,6 +15,7 @@ vm_network_type: nat
 vm_type: kvm
 
 # debops.libvirtd
-libvirtd__packages:
-  - python-libvirt
-  - dmidecode
+# libvirtd__packages:
+  # - python-libvirt
+  # - dmidecode
+
