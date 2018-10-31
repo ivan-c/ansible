@@ -29,7 +29,7 @@ jobs:
   - script: python -m pip install --upgrade pip && pip install tox
     displayName: 'Install dependencies'
 
-  - script: egrep -c '(vmx|svm)' /proc/cpuinfo
+  - script: cat /proc/cpuinfo
     displayName: 'grep CPU'
 
   - script: apt-get install cpu-checker
