@@ -29,6 +29,20 @@ jobs:
   - script: python -m pip install --upgrade pip && pip install tox
     displayName: 'Install dependencies'
 
+  - script: egrep -c '(vmx|svm)' /proc/cpuinfo
+    displayName: 'grep CPU'
+
+  - script: apt-get install cpu-checker
+    displayName: 'Install cpu checker'
+
+  - script: egrep -c '(vmx|svm)' /proc/cpuinfo
+    displayName: 'grep CPU'
+
+  - script: kvm-ok
+    displayName: 'check CPU'
+
+  - script: egrep -c '(vmx|svm)' /proc/cpuinfo
+    displayName: 'grep CPU'
 
   - script: |
       pip install pytest
