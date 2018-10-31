@@ -32,13 +32,13 @@ jobs:
   - script: cat /proc/cpuinfo
     displayName: 'grep CPU'
 
-  - script: apt-get install cpu-checker
+  - script: sudo apt-get install cpu-checker
     displayName: 'Install cpu checker'
 
-  - script: egrep -c '(vmx|svm)' /proc/cpuinfo
+  - script: grep -e vmx -e svm /proc/cpuinfo || true
     displayName: 'grep CPU'
 
-  - script: kvm-ok
+  - script: sudo kvm-ok
     displayName: 'check CPU'
 
   - script: egrep -c '(vmx|svm)' /proc/cpuinfo
