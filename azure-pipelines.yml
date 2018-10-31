@@ -29,10 +29,18 @@ jobs:
   - script: python -m pip install --upgrade pip && pip install tox
     displayName: 'Install dependencies'
 
+
+  - script: |
+      pip install pytest
+      tox -e qemu-scenario
+    displayName: 'tox qemu'
+
   - script: |
       pip install pytest
       tox -e default-scenario
-    displayName: 'tox'
+    displayName: 'tox default'
+
+
 
 #  - task: PublishTestResults@2
 #    inputs:
